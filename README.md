@@ -10,6 +10,8 @@ The CN105 connector exposes the UART interface via the RX and TX pins. As [disco
 
 Since the ESP32/STM32 runs on 3.3V while the UART runs on 5V, there is a need to use a logic level shifter. [BSS138](https://www.onsemi.com/pdf/datasheet/bss138-d.pdf) is a N-channel MOSFET with a low $V_{GS(th)}$, which makes it [more ideal than other NMOS components](https://electronics.stackexchange.com/questions/242424/what-can-i-replace-a-bss138-n-channel-mosfet-with).
 
+For more information about the packets, refer to [mUART Protocol Reference](https://muart-group.github.io/developer/packet-reference).
+
 ## Hardware
 
 ### MCU
