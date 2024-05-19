@@ -12,6 +12,23 @@ Since the ESP32/STM32 runs on 3.3V while the UART runs on 5V, there is a need to
 
 ## Hardware
 
+### MCU
+
+As part of the project goals, we want to build a device that leverages on the [Matter](https://csa-iot.org/all-solutions/matter/) standard for maximum compatibility and [Thread](https://www.threadgroup.org) for low-power, low-latency performance. The selected microcontroller should have the following features:
+
+- Support for WiFi and Thread
+- Support for Matter over WiFi/Thread
+
+| Manufacturer         | MPN                                                                                                                       | Type | Price                                                                                                                             |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------- | ---- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Espressif Systems    | [`ESP32-C6FH4`](https://www.espressif.com/sites/default/files/documentation/esp32-c6_datasheet_en.pdf)                    | SoC  |                                                                                                                                   |
+| Espressif Systems    | [`ESP32-C6-MINI-1`](https://www.espressif.com/sites/default/files/documentation/esp32-c6-mini-1_mini-1u_datasheet_en.pdf) | SoC  |                                                                                                                                   |
+| STMicroelectronics   | [`STM32WB55CGU6`](https://www.st.com/resource/en/datasheet/stm32wb55cg.pdf)                                               | SoC  | [US$3.48](https://www.lcsc.com/product-detail/Microcontroller-Units-MCUs-MPUs-SOCs_STMicroelectronics-STM32WB55CGU6_C404023.html) |
+| STMicroelectronics   | [`STM32WB5MMG`](https://www.st.com/resource/en/datasheet/stm32wb5mmg.pdf)                                                 | SoC  |                                                                                                                                   |
+| Nordic Semiconductor | [`NRF52840-QIAA-R`](https://docs-be.nordicsemi.com/bundle/ps_nrf52840/attach/nRF52840_PS_v1.9.pdf)                        | SoC  | [US$3.41](https://www.lcsc.com/product-detail/RF-Transceiver-ICs_Nordic-Semicon-NRF52840-QIAA-R_C190794.html)                     |
+
+_NOTE: The SKUs from [LCSC](https://www.lcsc.com) Popular Products are preferred to ensure good price and supply._
+
 ### Connector
 
 The Mitsubishi Electric air conditioner has a `CN105` port that appears to be a [JST PA](https://www.jst.com/products/appliance-connectors/pa-family/) connector. To fit this, we should use `PAP-05V-S` housing with `SPHD-001T-P0.5`/`SPHD-002T-P0.5` contacts.
