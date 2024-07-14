@@ -1,0 +1,14 @@
+services:
+  # TODO: Add healthchecks
+  mqtt:
+    image: eclipse-mosquitto:2.0.18-openssl
+    ports:
+      - "1883:1883/tcp" # MQTT
+      # - "9001:9001/tcp" # WebSockets
+    command: mosquitto -c /mosquitto-no-auth.conf
+  # TODO: Add healthchecks
+  mqtt-sub:
+    image: eclipse-mosquitto:2.0.18-openssl
+    command: mosquitto_sub -v -t 'aircon/#' -h mqtt
+    depends_on:
+      - mqtt
