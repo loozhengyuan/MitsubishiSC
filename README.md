@@ -2,6 +2,65 @@
 
 Smart controller for Mitsubishi Electric HVAC systems.
 
+## Development
+
+The source code is developed using the [nRF Connect SDK](https://www.nordicsemi.com/Products/Development-software/nRF-Connect-SDK), which is based on the [Zephyr RTOS](https://www.zephyrproject.org).
+
+This section is larged based on the [nRF Connect SDK documentation](https://docs.nordicsemi.com/bundle/ncs-latest/page/nrf/index.html), which is an adaptation of the [Zephyr Project Documentation](https://docs.zephyrproject.org/latest/index.html). Before continuing, ensure that you have the following installed:
+
+- [ ] [Zephyr host dependencies](https://docs.zephyrproject.org/latest/develop/getting_started/index.html#install-dependencies)
+- [ ] [nRF Util](https://www.nordicsemi.com/Products/Development-tools/nRF-Util)
+- [ ] [nRF Command Line Tools](https://www.nordicsemi.com/Products/Development-tools/nRF-Command-Line-Tools)
+
+### Set up `west` workspace
+
+This application adopts a [freestanding structure](https://docs.zephyrproject.org/latest/develop/application/index.html#zephyr-freestanding-app) so you will need to set up the [`west` workspace](https://docs.zephyrproject.org/latest/develop/west/workspaces.html#west-workspaces) on your own. Typically, [`zephyrproject-rtos/zephyr`](https://github.com/zephyrproject-rtos/zephyr) is the default manifest repository when initialising a new `west` workspace but it is recommended to use [`nrfconnect/sdk-nrf`](https://github.com/nrfconnect/sdk-nrf) instead for projects that run on Nordic nRF microcontrollers.
+
+```shell
+poetry install
+poetry shell
+```
+
+```shell
+export ZEPHYR_BASE=west
+west init -m https://github.com/nrfconnect/sdk-nrf --mr v2.7.0 "${ZEPHYR_BASE}"
+west update
+west zephyr-export
+```
+
+```shell
+nrfutil install toolchain-manager
+nrfutil toolchain-manager install --ncs-version v2.7.0
+```
+
+```shell
+pip install -r "${ZEPHYR_BASE}/zephyr/scripts/requirements.txt"
+pip install -r "${ZEPHYR_BASE}/nrf/scripts/requirements.txt"
+pip install -r "${ZEPHYR_BASE}/bootloader/mcuboot/scripts/requirements.txt"
+```
+
+```shell
+source "${ZEPHYR_BASE}/zephyr/zephyr-env.sh"
+```
+
+### Building
+
+```shell
+west build -p always -b nrf52840dongle/nrf52840
+```
+
+### Flashing
+
+```shell
+west flash
+```
+
+#### Nordic Secure DFU
+
+The [nRF Connect Programmer](https://docs.nordicsemi.com/bundle/nrf-connect-programmer/page/index.html) is an application available from the [nRF Connect for Desktop](https://www.nordicsemi.com/Products/Development-tools/nRF-Connect-for-Desktop) application.
+
+Flashing via the `nrfutil` CLI is not ideal because it relies on the legacy [nRF Util for nRF5 SDK](https://docs.nordicsemi.com/bundle/nrfutil/page/guides-nrf5sdk/intro.html) commands, which has since been deprecated. During local testing, the commands installed via `nrfutil install nrf5sdk-tools` does not work as well.
+
 ## Concepts
 
 ### Protocol

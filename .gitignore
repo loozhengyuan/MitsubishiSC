@@ -34,8 +34,8 @@
 # Environment files
 *.env
 
-# PlatformIO files
-.pio/
+# West workspace files
+west/
 
 # PCB export files
 build/
