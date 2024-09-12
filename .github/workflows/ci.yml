@@ -1,0 +1,99 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+defaults:
+  run:
+    # NOTE: Default option does not include `-o pipefail` as documented
+    # unless explicitly specifying the `bash` shell.
+    # https://github.com/actions/runner/issues/353
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    env:
+      ZEPHYR_BASE: west
+      NRF_CONNECT_SDK_VERSION: "2.7.0"
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4.1.7
+
+      - name: Setup Zephyr SDK
+        uses: loozhengyuan/actions/setup-zephyr-sdk@main
+        with:
+          version: "0.16.5-1"
+          toolchains: arm-zephyr-eabi
+
+      - name: Install host dependencies
+        run: |
+          sudo apt-get update --yes
+          sudo apt-get install --yes --no-install-recommends \
+            git \
+            cmake \
+            ninja-build \
+            gperf \
+            ccache \
+            dfu-util \
+            device-tree-compiler \
+            wget \
+            python3-dev \
+            python3-pip \
+            python3-setuptools \
+            python3-tk \
+            python3-wheel \
+            xz-utils \
+            file \
+            make \
+            gcc \
+            gcc-multilib \
+            g++-multilib \
+            libsdl2-dev \
+            libmagic1
+          cmake --version
+          python3 --version
+          dtc --version
+
+      - name: Install west command
+        run: |
+          pip install west
+          west --version
+
+      - name: Restore nRF Connect SDK Cache
+        id: cache-nrf-connect-sdk
+        uses: actions/cache@v4.0.2
+        with:
+          key: nrf-connect-sdk-${{ runner.os }}-${{ env.NRF_CONNECT_SDK_VERSION }}
+          path: |
+            ${{ env.ZEPHYR_BASE }}
+            ~/.cmake/packages/Zephyr
+            ~/.cmake/packages/ZephyrUnittest
+
+      - name: Install nRF Connect SDK
+        if: ${{ steps.cache-nrf-connect-sdk.outputs.cache-hit != 'true' }}
+        run: |
+          west init -m https://github.com/nrfconnect/sdk-nrf --mr "v${NRF_CONNECT_SDK_VERSION}" "${ZEPHYR_BASE}"
+          west update --narrow -o=--depth=1
+          west zephyr-export
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r west/zephyr/scripts/requirements.txt
+          pip install -r west/nrf/scripts/requirements.txt
+          pip install -r west/bootloader/mcuboot/scripts/requirements.txt
+
+      - name: Build application
+        run: |
+          source west/zephyr/zephyr-env.sh
+          west build \
+            --pristine always \
+            --board nrf52840dongle/nrf52840
