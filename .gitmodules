@@ -1,3 +1,6 @@
 [submodule "lib/stm32cubewb"]
 	path = lib/stm32cubewb
 	url = https://github.com/STMicroelectronics/STM32CubeWB
+[submodule "lib/x-cube-matter"]
+	path = lib/x-cube-matter
+	url = https://github.com/loozhengyuan/x-cube-matter
