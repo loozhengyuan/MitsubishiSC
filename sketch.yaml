@@ -1,0 +1,14 @@
+# Arduino Sketch Project File
+# https://arduino.github.io/arduino-cli/latest/sketch-project-file/
+
+default_profile: xiao_mg24
+
+profiles:
+  xiao_mg24:
+    fqbn: SiliconLabs:silabs:xiao_mg24
+    platforms:
+      - platform: SiliconLabs:silabs (2.2.0)
+  nano_matter:
+    fqbn: SiliconLabs:silabs:nano_matter
+    platforms:
+      - platform: SiliconLabs:silabs (2.2.0)

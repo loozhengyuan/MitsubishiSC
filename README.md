@@ -2,6 +2,22 @@
 
 Smart controller for Mitsubishi Electric HVAC systems.
 
+## Development
+
+This project uses [Arduino CLI](https://arduino.github.io/arduino-cli/latest/) to build and flash the firmware.
+
+### Building
+
+```shell
+arduino-cli compile
+```
+
+### Flashing
+
+```shell
+arduino-cli upload
+```
+
 ## Concepts
 
 ### Protocol
