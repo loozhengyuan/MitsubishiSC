@@ -1,0 +1,3 @@
+[submodule "hardware/lib"]
+	path = hardware/lib
+	url = git@github.com:loozhengyuan/kicad

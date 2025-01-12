@@ -60,4 +60,10 @@ rulesets:
             - integration_id: 15368
               context: fmt
             - integration_id: 15368
+              context: test-erc
+            - integration_id: 15368
+              context: test-drc
+            - integration_id: 15368
               context: build-fw
+            - integration_id: 15368
+              context: build-hw

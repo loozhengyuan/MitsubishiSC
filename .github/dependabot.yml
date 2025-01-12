@@ -14,3 +14,10 @@ updates:
         update-types:
           - "minor"
           - "patch"
+  - package-ecosystem: "gitsubmodule"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "saturday"
+      time: "09:00"
+      timezone: "Asia/Singapore"

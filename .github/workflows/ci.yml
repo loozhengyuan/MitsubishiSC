@@ -55,6 +55,109 @@ jobs:
         run: |
           find ./src/ -iregex '.*\.\(c\|h\|cpp\|hpp\)$' -type f -print0 | xargs -0 -L1 clang-format -style=file --dry-run --Werror
 
+  test-erc:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 3
+    container:
+      image: kicad/kicad:8.0.9
+      options: --user=root
+
+    steps:
+      # NOTE: Requires running KiCad container image as root
+      # https://github.com/actions/checkout/issues/956
+      - name: Checkout branch
+        uses: actions/checkout@v4.2.2
+        with:
+          submodules: 'true'
+
+      # NOTE: KiCad CLI expects the global tables to be in `~/.config/kicad/X.Y`
+      # and this is already correctly set up in the KiCad Docker image but GitHub
+      # Actions runs the container with a different `HOME` directory so we need
+      # to copy these files over.
+      - name: Set up global symbol/footprint tables
+        run: |
+          mkdir -p "${HOME}/.config"
+          cp -Rv '/home/kicad/.config/kicad' "${HOME}/.config"
+
+      - name: Ensure build directories exists
+        run: |
+          mkdir -p ./build/
+
+      - name: Show KiCad version
+        run: |
+          kicad-cli version
+
+      - name: Run tests
+        run: |
+          kicad-cli sch erc \
+            --exit-code-violations \
+            --output ./build/MitsubishiSC.rpt \
+            ./hardware/MitsubishiSC.kicad_sch
+
+      - name: Display report
+        if: success() || failure()
+        run: |
+          cat ./build/MitsubishiSC.rpt
+
+      - name: Upload report
+        if: success() || failure()
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: hw-rpt-erc
+          path: ./build/
+
+  test-drc:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 3
+    container:
+      image: kicad/kicad:8.0.9
+      options: --user=root
+
+    steps:
+      # NOTE: Requires running KiCad container image as root
+      # https://github.com/actions/checkout/issues/956
+      - name: Checkout branch
+        uses: actions/checkout@v4.2.2
+        with:
+          submodules: 'true'
+
+      # NOTE: KiCad CLI expects the global tables to be in `~/.config/kicad/X.Y`
+      # and this is already correctly set up in the KiCad Docker image but GitHub
+      # Actions runs the container with a different `HOME` directory so we need
+      # to copy these files over.
+      - name: Set up global symbol/footprint tables
+        run: |
+          mkdir -p "${HOME}/.config"
+          cp -Rv '/home/kicad/.config/kicad' "${HOME}/.config"
+
+      - name: Ensure build directories exists
+        run: |
+          mkdir -p ./build/
+
+      - name: Show KiCad version
+        run: |
+          kicad-cli version
+
+      - name: Run tests
+        run: |
+          kicad-cli pcb drc \
+            --exit-code-violations \
+            --schematic-parity \
+            --output ./build/MitsubishiSC.rpt \
+            ./hardware/MitsubishiSC.kicad_pcb
+
+      - name: Display report
+        if: success() || failure()
+        run: |
+          cat ./build/MitsubishiSC.rpt
+
+      - name: Upload report
+        if: success() || failure()
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: hw-rpt-drc
+          path: ./build/MitsubishiSC.rpt
+
   build-fw:
     needs:
       - lint
@@ -79,3 +182,142 @@ jobs:
       - name: Compile firmware
         run: |
           pio run
+
+  build-hw:
+    needs:
+      - test-erc
+      - test-drc
+    runs-on: ubuntu-22.04
+    timeout-minutes: 3
+    container:
+      image: kicad/kicad:8.0.9
+      options: --user=root
+
+    steps:
+      # NOTE: Requires running KiCad container image as root
+      # https://github.com/actions/checkout/issues/956
+      - name: Checkout branch
+        uses: actions/checkout@v4.2.2
+        with:
+          submodules: 'true'
+
+      # NOTE: KiCad CLI expects the global tables to be in `~/.config/kicad/X.Y`
+      # and this is already correctly set up in the KiCad Docker image but GitHub
+      # Actions runs the container with a different `HOME` directory so we need
+      # to copy these files over.
+      - name: Set up global symbol/footprint tables
+        run: |
+          mkdir -p "${HOME}/.config"
+          cp -Rv '/home/kicad/.config/kicad' "${HOME}/.config"
+
+      # NOTE: The workspace directory is not marked as safe directory
+      # when running in container due to Git config issues, so this
+      # needs to be done explicitly.
+      # https://github.com/actions/checkout/issues/1169
+      # NOTE: The `GITHUB_WORKSPACE` variable must be used when running
+      # in container because `github.workspace` refers to a different path.
+      # https://github.com/actions/runner/issues/2058
+      - name: Mark Git workspace as safe directory
+        run: |
+          git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+
+      - name: Set up build variables
+        run: |
+          echo BUILD_COMMIT="$(git rev-parse --verify HEAD)" >> "${GITHUB_ENV}"
+          echo BUILD_TIMESTAMP="$(date -u '+%Y-%m-%dT%H:%M:%SZ')" >> "${GITHUB_ENV}"
+
+      - name: Ensure build directories exists
+        run: |
+          mkdir -p ./build/manufacturing/
+          mkdir -p ./build/assembly/
+          mkdir -p ./build/schematic/
+
+      - name: Show KiCad version
+        run: |
+          kicad-cli version
+
+      # NOTE: Configuration based on JLCPCB requirements for KiCad 8
+      # https://jlcpcb.com/help/article/how-to-generate-gerber-and-drill-files-in-kicad-8
+      - name: Export Gerber files
+        run: |
+          kicad-cli pcb export gerbers \
+            --layers 'F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,F.Mask,B.Mask,Edge.Cuts' \
+            --no-x2 \
+            --no-netlist \
+            --subtract-soldermask \
+            --use-drill-file-origin \
+            --output ./build/manufacturing/ \
+            --define-var "BUILD_COMMIT=${BUILD_COMMIT}" \
+            --define-var "BUILD_TIMESTAMP=${BUILD_TIMESTAMP}" \
+            ./hardware/MitsubishiSC.kicad_pcb
+      - name: Export drill and drill map files
+        run: |
+          kicad-cli pcb export drill \
+            --excellon-separate-th \
+            --drill-origin plot \
+            --generate-map \
+            --map-format gerberx2 \
+            --output ./build/manufacturing/ \
+            ./hardware/MitsubishiSC.kicad_pcb
+
+      # NOTE: Configuration based on JLCPCB requirements for KiCad 8
+      # https://jlcpcb.com/help/article/how-to-generate-bom-and-centroid-files-from-kicad-8
+      - name: Export BOM files
+        run: |
+          kicad-cli sch export bom \
+            --output ./build/assembly/MitsubishiSC-BOM.csv \
+            --fields 'Reference,Value,Footprint,Manufacturer,Manufacturer Part Number,Distributor,Distributor Part Number,${QUANTITY},Comment,${DNP}' \
+            --labels 'Reference,Value,Footprint,Manufacturer,Manufacturer Part Number,Distributor,Distributor Part Number,Quantity,Comment,DNP' \
+            --exclude-dnp \
+            ./hardware/MitsubishiSC.kicad_sch
+          kicad-cli sch export bom \
+            --output ./build/assembly/MitsubishiSC-BOM-Grouped.csv \
+            --fields 'Reference,Value,Footprint,Manufacturer,Manufacturer Part Number,Distributor,Distributor Part Number,${QUANTITY},Comment,${DNP}' \
+            --labels 'Reference,Value,Footprint,Manufacturer,Manufacturer Part Number,Distributor,Distributor Part Number,Quantity,Comment,DNP' \
+            --group-by 'Value' \
+            --exclude-dnp \
+            ./hardware/MitsubishiSC.kicad_sch
+      - name: Export component placement files
+        run: |
+          kicad-cli pcb export pos \
+            --output ./build/assembly/MitsubishiSC-CPL.csv \
+            --format csv \
+            --side both \
+            --units mm \
+            --use-drill-file-origin \
+            --exclude-dnp \
+            ./hardware/MitsubishiSC.kicad_pcb
+          kicad-cli pcb export pos \
+            --output ./build/assembly/MitsubishiSC-CPL.txt \
+            --format ascii \
+            --side both \
+            --units mm \
+            --use-drill-file-origin \
+            --exclude-dnp \
+            ./hardware/MitsubishiSC.kicad_pcb
+
+      - name: Export schematic
+        run: |
+          kicad-cli sch export pdf \
+            --output ./build/schematic/MitsubishiSC.pdf \
+            --define-var "BUILD_COMMIT=${BUILD_COMMIT}" \
+            --define-var "BUILD_TIMESTAMP=${BUILD_TIMESTAMP}" \
+            ./hardware/MitsubishiSC.kicad_sch
+
+      - name: Upload manufacturing artifacts
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: hw-build-mfg
+          path: ./build/manufacturing/
+
+      - name: Upload assembly artifacts
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: hw-build-asb
+          path: ./build/assembly/
+
+      - name: Upload schematic artifacts
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          name: hw-build-sch
+          path: ./build/schematic/
