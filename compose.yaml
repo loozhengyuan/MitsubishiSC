@@ -1,0 +1,18 @@
+services:
+  mqtt-server:
+    image: eclipse-mosquitto:2.0.20-openssl
+    ports:
+      - "1883:1883/tcp" # MQTT
+      - "9001:9001/tcp" # WebSockets
+    command: mosquitto -c /mosquitto-no-auth.conf
+    healthcheck:
+      test: ["CMD-SHELL", "mosquitto_sub --verbose --id-prefix healthcheck --topic '$$SYS/#' -C 1 -W 1"] # Exit after 1 count, timeout after 1s
+      start_period: 10s
+      start_interval: 2s
+  mqtt-client:
+    image: eclipse-mosquitto:2.0.20-openssl
+    command: mosquitto_sub --verbose --id-prefix client --topic 'ac/#' --host mqtt-server
+    depends_on:
+      mqtt-server:
+        condition: service_healthy
+        restart: true

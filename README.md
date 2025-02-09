@@ -1,6 +1,28 @@
 # MitsubishiSC
 
+[![ci](https://github.com/loozhengyuan/MitsubishiSC/actions/workflows/ci.yml/badge.svg)](https://github.com/loozhengyuan/MitsubishiSC/actions/workflows/ci.yml)
+
 Smart controller for Mitsubishi Electric HVAC systems.
+
+## Usage
+
+The [`platformio.ini`](./platformio.ini) defines the list of build environments. Each board configuration comes in `debug` and `release` builds.
+
+### Build
+
+To compile the firmware, use the `pio run` command with the designated build environment.
+
+```shell
+pio run --environment mitsubishisc_v1_release
+```
+
+### Flash
+
+To flash the build artifact to the board, connect the board and run the `pio run` command with the `upload` target.
+
+```shell
+pio run --target upload --environment mitsubishisc_v1_release
+```
 
 ## Concepts
 

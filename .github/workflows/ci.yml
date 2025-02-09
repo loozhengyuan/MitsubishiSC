@@ -1,0 +1,81 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+defaults:
+  run:
+    # NOTE: Default option does not include `-o pipefail` as documented
+    # unless explicitly specifying the `bash` shell.
+    # https://github.com/actions/runner/issues/353
+    shell: bash
+
+jobs:
+  lint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5.3.0
+        with:
+          python-version: "3.12.1"
+
+      - name: Install PlatformIO
+        run: |
+          pip install --upgrade platformio
+          pio --version
+
+      - name: Run linter checks
+        run: |
+          pio check --skip-packages
+
+  fmt:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 3
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4.2.2
+
+      - name: Install clang-format
+        run: |
+          sudo apt-get install -y clang-format
+          clang-format --version
+
+      - name: Run formatting checks
+        run: |
+          find ./src/ -iregex '.*\.\(c\|h\|cpp\|hpp\)$' -type f -print0 | xargs -0 -L1 clang-format -style=file --dry-run --Werror
+
+  build-fw:
+    needs:
+      - lint
+      - fmt
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v4.2.2
+
+      - name: Setup Python
+        uses: actions/setup-python@v5.3.0
+        with:
+          python-version: "3.12.1"
+
+      - name: Install PlatformIO
+        run: |
+          pip install --upgrade platformio
+          pio --version
+
+      - name: Compile firmware
+        run: |
+          pio run
