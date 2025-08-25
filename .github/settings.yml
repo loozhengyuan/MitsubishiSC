@@ -3,7 +3,6 @@
 
 repository:
   # Disable unused features
-  has_issues: true
   has_discussions: false
   has_projects: false
   has_wiki: false
