@@ -101,7 +101,7 @@ jobs:
 
       - name: Upload report
         if: success() || failure()
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: hw-rpt-erc
           path: ./build/
@@ -153,7 +153,7 @@ jobs:
 
       - name: Upload report
         if: success() || failure()
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: hw-rpt-drc
           path: ./build/MitsubishiSC.rpt
@@ -305,19 +305,19 @@ jobs:
             ./hardware/MitsubishiSC.kicad_sch
 
       - name: Upload manufacturing artifacts
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: hw-build-mfg
           path: ./build/manufacturing/
 
       - name: Upload assembly artifacts
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: hw-build-asb
           path: ./build/assembly/
 
       - name: Upload schematic artifacts
-        uses: actions/upload-artifact@v4.6.0
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: hw-build-sch
           path: ./build/schematic/
