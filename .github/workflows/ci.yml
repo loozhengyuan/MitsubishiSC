@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 3
     container:
-      image: kicad/kicad:8.0.9
+      image: kicad/kicad:9.0.4
       options: --user=root
 
     steps:
@@ -110,7 +110,7 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 3
     container:
-      image: kicad/kicad:8.0.9
+      image: kicad/kicad:9.0.4
       options: --user=root
 
     steps:
@@ -190,7 +190,7 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 3
     container:
-      image: kicad/kicad:8.0.9
+      image: kicad/kicad:9.0.4
       options: --user=root
 
     steps:
