@@ -221,15 +221,28 @@ jobs:
         run: |
           git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
-      - name: Show KiCad version
+      # NOTE: The official KiCad Docker image does not include 3D models
+      # in the image so this needs to be injected in runtime.
+      # https://gitlab.com/kicad/packaging/kicad-cli-docker/-/issues/6
+      - name: Fetch 3D models
         run: |
-          kicad-cli version
+          git clone \
+            --branch 9.0.4 \
+            --depth 1 \
+            https://gitlab.com/kicad/libraries/kicad-packages3D.git \
+            /usr/share/kicad/3dmodels
 
       # NOTE: Requires running KiCad container image as `runner` user
       # https://github.com/actions/runner/issues/2033
       - name: Generate export files
         run: |
           ./scripts/export.sh
+
+      - name: Upload design artifacts
+        uses: actions/upload-artifact@v4.6.2
+        with:
+          name: hw-build-dsn
+          path: ./build/design/
 
       - name: Upload manufacturing artifacts
         uses: actions/upload-artifact@v4.6.2
@@ -242,9 +255,3 @@ jobs:
         with:
           name: hw-build-asb
           path: ./build/assembly/
-
-      - name: Upload schematic artifacts
-        uses: actions/upload-artifact@v4.6.2
-        with:
-          name: hw-build-sch
-          path: ./build/schematic/
