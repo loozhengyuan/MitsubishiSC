@@ -8,9 +8,9 @@ script_dir="$(dirname "${BASH_SOURCE[0]}")"
 script_name="$(basename "${BASH_SOURCE[0]}")"
 
 tmp_dir="$(mktemp -d)"
+tmp_dir_dsn="${tmp_dir}/design"
 tmp_dir_mfg="${tmp_dir}/manufacturing"
 tmp_dir_asb="${tmp_dir}/assembly"
-tmp_dir_sch="${tmp_dir}/schematic"
 out_dir='./build'
 
 kicad_expected_version='9.0.4'
@@ -41,9 +41,9 @@ trap cleanup SIGHUP SIGINT SIGTERM ERR EXIT
 
 # Ensure required file directories are created
 mkdir -p "${tmp_dir}"
+mkdir -p "${tmp_dir_dsn}"
 mkdir -p "${tmp_dir_mfg}"
 mkdir -p "${tmp_dir_asb}"
-mkdir -p "${tmp_dir_sch}"
 mkdir -p "${out_dir}"
 
 # NOTE: Configuration based on JLCPCB requirements for KiCad 8
@@ -106,11 +106,59 @@ kicad-cli pcb export pos \
 
 printf "Exporting schematic file...\n"
 kicad-cli sch export pdf \
-    --output "${tmp_dir_sch}/${kicad_project_name}.pdf" \
+    --output "${tmp_dir_dsn}/${kicad_project_name}.pdf" \
     --define-var "BUILD_COMMIT=${build_commit}" \
     --define-var "BUILD_TIMESTAMP=${build_timestamp}" \
     "${kicad_sch_file}"
 
+printf "Exporting 3D model files...\n"
+# FIXME: Re-enable STEP export after regenerated footprints are released
+# https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/issues/728
+# kicad-cli pcb export step \
+#     --output "${tmp_dir_dsn}/${kicad_project_name}.step" \
+#     --user-origin 0,0 \
+#     --subst-models \
+#     "${kicad_pcb_file}"
+kicad-cli pcb export vrml \
+    --output "${tmp_dir_dsn}/${kicad_project_name}.wrl" \
+    --user-origin 0,0 \
+    "${kicad_pcb_file}"
+
+# FIXME: Due to issue parsing negative values, we deliberately
+# add an extra space in the arg value of `--rotate` as workaround.
+# https://gitlab.com/kicad/code/kicad/-/issues/20191
+printf "Exporting 3D render files...\n"
+kicad-cli pcb render \
+    --output "${tmp_dir_dsn}/${kicad_project_name}-Top.png" \
+    --define-var "BUILD_COMMIT=${build_commit}" \
+    --define-var "BUILD_TIMESTAMP=${build_timestamp}" \
+    --zoom '0.8' \
+    --side top \
+    "${kicad_pcb_file}"
+kicad-cli pcb render \
+    --output "${tmp_dir_dsn}/${kicad_project_name}-TopIso.png" \
+    --define-var "BUILD_COMMIT=${build_commit}" \
+    --define-var "BUILD_TIMESTAMP=${build_timestamp}" \
+    --zoom '0.8' \
+    --side top \
+    --rotate ' -45,0,45' \
+    "${kicad_pcb_file}"
+kicad-cli pcb render \
+    --output "${tmp_dir_dsn}/${kicad_project_name}-Bottom.png" \
+    --define-var "BUILD_COMMIT=${build_commit}" \
+    --define-var "BUILD_TIMESTAMP=${build_timestamp}" \
+    --zoom '0.8' \
+    --side bottom \
+    "${kicad_pcb_file}"
+kicad-cli pcb render \
+    --output "${tmp_dir_dsn}/${kicad_project_name}-BottomIso.png" \
+    --define-var "BUILD_COMMIT=${build_commit}" \
+    --define-var "BUILD_TIMESTAMP=${build_timestamp}" \
+    --zoom '0.8' \
+    --side bottom \
+    --rotate ' -45,0,45' \
+    "${kicad_pcb_file}"
+
+cp -R "${tmp_dir_dsn}" "${out_dir}"
 cp -R "${tmp_dir_mfg}" "${out_dir}"
 cp -R "${tmp_dir_asb}" "${out_dir}"
-cp -R "${tmp_dir_sch}" "${out_dir}"
