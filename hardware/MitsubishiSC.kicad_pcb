@@ -10170,7 +10170,7 @@
 				)
 			)
 		)
-		(property "Value" "1kR"
+		(property "Value" "10kR"
 			(at 0 1.43 0)
 			(layer "F.Fab")
 			(uuid "85b95e1b-e212-4aed-9a43-38c7c0d70e9f")
@@ -10181,7 +10181,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-071KL_C22548.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_2304140030_YAGEO-RC0603FR-0710KL_C98220.pdf"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -10220,7 +10220,7 @@
 				)
 			)
 		)
-		(property "Distributor Part Number" "C22548"
+		(property "Distributor Part Number" "C98220"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -10246,7 +10246,7 @@
 				)
 			)
 		)
-		(property "Manufacturer Part Number" "RC0603FR-071KL"
+		(property "Manufacturer Part Number" "RC0603FR-0710KL"
 			(at 0 0 180)
 			(unlocked yes)
 			(layer "F.Fab")
