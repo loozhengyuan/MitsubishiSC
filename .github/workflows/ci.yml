@@ -221,88 +221,15 @@ jobs:
         run: |
           git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
-      - name: Set up build variables
-        run: |
-          echo BUILD_COMMIT="$(git rev-parse --verify HEAD)" >> "${GITHUB_ENV}"
-          echo BUILD_TIMESTAMP="$(date -u '+%Y-%m-%dT%H:%M:%SZ')" >> "${GITHUB_ENV}"
-
-      - name: Ensure build directories exists
-        run: |
-          mkdir -p ./build/manufacturing/
-          mkdir -p ./build/assembly/
-          mkdir -p ./build/schematic/
-
       - name: Show KiCad version
         run: |
           kicad-cli version
 
-      # NOTE: Configuration based on JLCPCB requirements for KiCad 8
-      # https://jlcpcb.com/help/article/how-to-generate-gerber-and-drill-files-in-kicad-8
-      - name: Export Gerber files
+      # NOTE: Requires running KiCad container image as `runner` user
+      # https://github.com/actions/runner/issues/2033
+      - name: Generate export files
         run: |
-          kicad-cli pcb export gerbers \
-            --layers 'F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,F.Mask,B.Mask,Edge.Cuts' \
-            --no-x2 \
-            --no-netlist \
-            --subtract-soldermask \
-            --use-drill-file-origin \
-            --output ./build/manufacturing/ \
-            --define-var "BUILD_COMMIT=${BUILD_COMMIT}" \
-            --define-var "BUILD_TIMESTAMP=${BUILD_TIMESTAMP}" \
-            ./hardware/MitsubishiSC.kicad_pcb
-      - name: Export drill and drill map files
-        run: |
-          kicad-cli pcb export drill \
-            --excellon-separate-th \
-            --drill-origin plot \
-            --generate-map \
-            --map-format gerberx2 \
-            --output ./build/manufacturing/ \
-            ./hardware/MitsubishiSC.kicad_pcb
-
-      # NOTE: Configuration based on JLCPCB requirements for KiCad 8
-      # https://jlcpcb.com/help/article/how-to-generate-bom-and-centroid-files-from-kicad-8
-      - name: Export BOM files
-        run: |
-          kicad-cli sch export bom \
-            --output ./build/assembly/MitsubishiSC-BOM.csv \
-            --fields 'Reference,Value,Footprint,Manufacturer,Manufacturer Part Number,Distributor,Distributor Part Number,${QUANTITY},Comment,${DNP}' \
-            --labels 'Reference,Value,Footprint,Manufacturer,Manufacturer Part Number,Distributor,Distributor Part Number,Quantity,Comment,DNP' \
-            --exclude-dnp \
-            ./hardware/MitsubishiSC.kicad_sch
-          kicad-cli sch export bom \
-            --output ./build/assembly/MitsubishiSC-BOM-Grouped.csv \
-            --fields 'Reference,Value,Footprint,Manufacturer,Manufacturer Part Number,Distributor,Distributor Part Number,${QUANTITY},Comment,${DNP}' \
-            --labels 'Reference,Value,Footprint,Manufacturer,Manufacturer Part Number,Distributor,Distributor Part Number,Quantity,Comment,DNP' \
-            --group-by 'Value' \
-            --exclude-dnp \
-            ./hardware/MitsubishiSC.kicad_sch
-      - name: Export component placement files
-        run: |
-          kicad-cli pcb export pos \
-            --output ./build/assembly/MitsubishiSC-CPL.csv \
-            --format csv \
-            --side both \
-            --units mm \
-            --use-drill-file-origin \
-            --exclude-dnp \
-            ./hardware/MitsubishiSC.kicad_pcb
-          kicad-cli pcb export pos \
-            --output ./build/assembly/MitsubishiSC-CPL.txt \
-            --format ascii \
-            --side both \
-            --units mm \
-            --use-drill-file-origin \
-            --exclude-dnp \
-            ./hardware/MitsubishiSC.kicad_pcb
-
-      - name: Export schematic
-        run: |
-          kicad-cli sch export pdf \
-            --output ./build/schematic/MitsubishiSC.pdf \
-            --define-var "BUILD_COMMIT=${BUILD_COMMIT}" \
-            --define-var "BUILD_TIMESTAMP=${BUILD_TIMESTAMP}" \
-            ./hardware/MitsubishiSC.kicad_sch
+          ./scripts/export.sh
 
       - name: Upload manufacturing artifacts
         uses: actions/upload-artifact@v4.6.2
