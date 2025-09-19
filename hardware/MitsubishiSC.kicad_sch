@@ -4593,7 +4593,7 @@
 		)
 		(uuid "68c246fc-7189-47f8-9b7c-8fb7bf336181")
 	)
-	(text "Resistors are thick film resistors rated for 75V ±1% or better, unless stated otherwise.\nCapacitors are Class II MLCCs rated for 25V ±10% 85°C or better, unless stated otherwise.\nFuses rated at 300mA have 30V rating and 600mA trip current."
+	(text "Resistors are thick film resistors rated for 75V ±1% or better, unless stated otherwise.\nCapacitors are Class II MLCCs rated for 25V ±10% 85°C or better, unless stated otherwise.\nFuses rated at 350mA have 16V rating and 750mA trip current."
 		(exclude_from_sim no)
 		(at 13.208 194.31 0)
 		(effects
@@ -15428,7 +15428,7 @@
 				)
 			)
 		)
-		(property "Value" "300mA"
+		(property "Value" "350mA"
 			(at 67.31 57.15 90)
 			(effects
 				(font
@@ -15446,7 +15446,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_1808271848_BOURNS-MF-MSMF030-2_C12604.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C126817.pdf"
 			(at 67.31 60.96 0)
 			(effects
 				(font
@@ -15482,7 +15482,7 @@
 				(hide yes)
 			)
 		)
-		(property "Distributor Part Number" "C12604"
+		(property "Distributor Part Number" "C126817"
 			(at 67.31 60.96 0)
 			(effects
 				(font
@@ -15491,7 +15491,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Bourns Inc."
+		(property "Manufacturer" "Littelfuse"
 			(at 67.31 60.96 0)
 			(effects
 				(font
@@ -15500,7 +15500,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer Part Number" "MF-MSMF030-2"
+		(property "Manufacturer Part Number" "1206L035/16"
 			(at 67.31 60.96 0)
 			(effects
 				(font
@@ -16984,7 +16984,7 @@
 				)
 			)
 		)
-		(property "Value" "300mA"
+		(property "Value" "350mA"
 			(at 92.71 133.35 90)
 			(effects
 				(font
@@ -17002,7 +17002,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_1808271848_BOURNS-MF-MSMF030-2_C12604.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C126817.pdf"
 			(at 92.71 137.16 0)
 			(effects
 				(font
@@ -17038,7 +17038,7 @@
 				(hide yes)
 			)
 		)
-		(property "Distributor Part Number" "C12604"
+		(property "Distributor Part Number" "C126817"
 			(at 92.71 137.16 0)
 			(effects
 				(font
@@ -17047,7 +17047,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer" "Bourns Inc."
+		(property "Manufacturer" "Littelfuse"
 			(at 92.71 137.16 0)
 			(effects
 				(font
@@ -17056,7 +17056,7 @@
 				(hide yes)
 			)
 		)
-		(property "Manufacturer Part Number" "MF-MSMF030-2"
+		(property "Manufacturer Part Number" "1206L035/16"
 			(at 92.71 137.16 0)
 			(effects
 				(font
