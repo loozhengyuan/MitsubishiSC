@@ -187,7 +187,7 @@
 	(property "BOARD_ENGINEER" "Loo Zheng Yuan")
 	(property "BOARD_NAME" "MitsubishiSC")
 	(property "BOARD_REVISION" "A")
-	(property "BOARD_VERSION" "0.1")
+	(property "BOARD_VERSION" "0.2")
 	(property "BUILD_COMMIT" "")
 	(property "BUILD_TIMESTAMP" "")
 	(net 0 "")
