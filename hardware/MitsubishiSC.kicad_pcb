@@ -5935,7 +5935,7 @@
 				)
 			)
 		)
-		(property "Value" "300mA"
+		(property "Value" "350mA"
 			(at 0 1.82 90)
 			(layer "F.Fab")
 			(uuid "3474cf8d-0ef4-471b-b91f-6a94cbdfd902")
@@ -5946,7 +5946,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_1808271848_BOURNS-MF-MSMF030-2_C12604.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C126817.pdf"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -5998,7 +5998,7 @@
 				)
 			)
 		)
-		(property "Distributor Part Number" "C12604"
+		(property "Distributor Part Number" "C126817"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -6011,7 +6011,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Bourns Inc."
+		(property "Manufacturer" "Littelfuse"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -6024,7 +6024,7 @@
 				)
 			)
 		)
-		(property "Manufacturer Part Number" "MF-MSMF030-2"
+		(property "Manufacturer Part Number" "1206L035/16"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -17369,7 +17369,7 @@
 				)
 			)
 		)
-		(property "Value" "300mA"
+		(property "Value" "350mA"
 			(at 0 1.82 90)
 			(layer "F.Fab")
 			(uuid "7e45f7c8-d5fd-49cd-980d-5caab324e625")
@@ -17380,7 +17380,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/lcsc_datasheet_1808271848_BOURNS-MF-MSMF030-2_C12604.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C126817.pdf"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -17432,7 +17432,7 @@
 				)
 			)
 		)
-		(property "Distributor Part Number" "C12604"
+		(property "Distributor Part Number" "C126817"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -17445,7 +17445,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "Bourns Inc."
+		(property "Manufacturer" "Littelfuse"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
@@ -17458,7 +17458,7 @@
 				)
 			)
 		)
-		(property "Manufacturer Part Number" "MF-MSMF030-2"
+		(property "Manufacturer Part Number" "1206L035/16"
 			(at 0 0 90)
 			(unlocked yes)
 			(layer "F.Fab")
