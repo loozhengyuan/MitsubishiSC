@@ -163,7 +163,7 @@ jobs:
       - lint
       - fmt
     runs-on: ubuntu-24.04
-    timeout-minutes: 3
+    timeout-minutes: 5
 
     steps:
       - name: Checkout branch
