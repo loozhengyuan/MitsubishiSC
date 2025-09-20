@@ -39,7 +39,7 @@ jobs:
           pio check --skip-packages
 
   fmt:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 3
 
     steps:
@@ -56,7 +56,7 @@ jobs:
           find ./src/ -iregex '.*\.\(c\|h\|cpp\|hpp\)$' -type f -print0 | xargs -0 -L1 clang-format -style=file --dry-run --Werror
 
   test-erc:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 3
     container:
       image: kicad/kicad:9.0.4
@@ -107,7 +107,7 @@ jobs:
           path: ./build/
 
   test-drc:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 3
     container:
       image: kicad/kicad:9.0.4
@@ -187,7 +187,7 @@ jobs:
     needs:
       - test-erc
       - test-drc
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 3
     container:
       image: kicad/kicad:9.0.4
