@@ -13,7 +13,7 @@ tmp_dir_mfg="${tmp_dir}/manufacturing"
 tmp_dir_asb="${tmp_dir}/assembly"
 out_dir='./build'
 
-kicad_expected_version='9.0.4'
+kicad_expected_version='9.0.6'
 kicad_project_name='MitsubishiSC'
 kicad_sch_file="./hardware/${kicad_project_name}.kicad_sch"
 kicad_pcb_file="./hardware/${kicad_project_name}.kicad_pcb"

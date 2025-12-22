@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     container:
-      image: kicad/kicad:9.0.4
+      image: kicad/kicad:9.0.6
       options: --user=root
 
     steps:
@@ -110,7 +110,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     container:
-      image: kicad/kicad:9.0.4
+      image: kicad/kicad:9.0.6
       options: --user=root
 
     steps:
@@ -190,7 +190,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 3
     container:
-      image: kicad/kicad:9.0.4
+      image: kicad/kicad:9.0.6
       options: --user=root
 
     steps:
@@ -227,7 +227,7 @@ jobs:
       - name: Fetch 3D models
         run: |
           git clone \
-            --branch 9.0.4 \
+            --branch 9.0.6 \
             --depth 1 \
             https://gitlab.com/kicad/libraries/kicad-packages3D.git \
             /usr/share/kicad/3dmodels
