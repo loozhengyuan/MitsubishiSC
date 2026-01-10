@@ -235,6 +235,9 @@ jobs:
       # NOTE: Requires running KiCad container image as `runner` user
       # https://github.com/actions/runner/issues/2033
       - name: Generate export files
+        env:
+          # NOTE: Required for custom 3D libraries to be rendered
+          CUSTOM_LIBRARY_DIR: ./hardware/lib/lib
         run: |
           ./scripts/export.sh
 

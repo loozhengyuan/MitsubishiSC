@@ -50,7 +50,7 @@ mkdir -p "${out_dir}"
 # https://jlcpcb.com/help/article/how-to-generate-gerber-and-drill-files-in-kicad-8
 printf "Exporting Gerber files...\n"
 kicad-cli pcb export gerbers \
-    --layers F.Cu,In1.Cu,In2.Cu,In3.Cu,In4.Cu,B.Cu,F.Paste,B.Paste,F.Silkscreen,B.Silkscreen,F.Mask,B.Mask,Edge.Cuts \
+    --layers '*.Cu,*.Paste,*.Silkscreen,*.Mask,Edge.Cuts' \
     --no-x2 \
     --no-netlist \
     --subtract-soldermask \
@@ -112,13 +112,11 @@ kicad-cli sch export pdf \
     "${kicad_sch_file}"
 
 printf "Exporting 3D model files...\n"
-# FIXME: Re-enable STEP export after regenerated footprints are released
-# https://gitlab.com/kicad/libraries/kicad-footprint-generator/-/issues/728
-# kicad-cli pcb export step \
-#     --output "${tmp_dir_dsn}/${kicad_project_name}.step" \
-#     --user-origin 0,0 \
-#     --subst-models \
-#     "${kicad_pcb_file}"
+kicad-cli pcb export step \
+    --output "${tmp_dir_dsn}/${kicad_project_name}.step" \
+    --user-origin 0,0 \
+    --subst-models \
+    "${kicad_pcb_file}"
 kicad-cli pcb export vrml \
     --output "${tmp_dir_dsn}/${kicad_project_name}.wrl" \
     --user-origin 0,0 \
