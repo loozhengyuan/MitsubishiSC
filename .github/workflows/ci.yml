@@ -103,7 +103,7 @@ jobs:
         if: success() || failure()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
-          name: hw-rpt-erc
+          name: MitsubishiSC-hw-rpt-erc
           path: ./build/
 
   test-drc:
@@ -155,7 +155,7 @@ jobs:
         if: success() || failure()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
-          name: hw-rpt-drc
+          name: MitsubishiSC-hw-rpt-drc
           path: ./build/MitsubishiSC.rpt
 
   build-fw:
@@ -244,17 +244,17 @@ jobs:
       - name: Upload design artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
-          name: hw-build-dsn
+          name: MitsubishiSC-hw-build-dsn
           path: ./build/design/
 
       - name: Upload manufacturing artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
-          name: hw-build-mfg
+          name: MitsubishiSC-hw-build-mfg
           path: ./build/manufacturing/
 
       - name: Upload assembly artifacts
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
-          name: hw-build-asb
+          name: MitsubishiSC-hw-build-asb
           path: ./build/assembly/
