@@ -103,6 +103,33 @@ kicad-cli pcb export pos \
     --use-drill-file-origin \
     --exclude-dnp \
     "${kicad_pcb_file}"
+# Create a modified CPL CSV with headers matching JLCPCB requirements
+sed '1s/.*/Designator,Val,Package,Mid X,Mid Y,Rotation,Layer/' "${tmp_dir_asb}/${kicad_project_name}-CPL.csv" > "${tmp_dir_asb}/${kicad_project_name}-CPL-JLCPCB.csv"
+
+printf "Exporting board design files...\n"
+kicad-cli pcb export pdf \
+    --output "${tmp_dir_asb}/${kicad_project_name}-Fab-F.pdf" \
+    --define-var "BUILD_COMMIT=${build_commit}" \
+    --define-var "BUILD_TIMESTAMP=${build_timestamp}" \
+    --layers 'F.Fab,Edge.Cuts' \
+    --black-and-white \
+    --include-border-title \
+    --exclude-value \
+    --sketch-pads-on-fab-layers \
+    --crossout-DNP-footprints-on-fab-layers \
+    "${kicad_pcb_file}"
+kicad-cli pcb export pdf \
+    --output "${tmp_dir_asb}/${kicad_project_name}-Fab-B.pdf" \
+    --define-var "BUILD_COMMIT=${build_commit}" \
+    --define-var "BUILD_TIMESTAMP=${build_timestamp}" \
+    --layers 'B.Fab,Edge.Cuts' \
+    --black-and-white \
+    --include-border-title \
+    --exclude-value \
+    --sketch-pads-on-fab-layers \
+    --crossout-DNP-footprints-on-fab-layers \
+    --mirror \
+    "${kicad_pcb_file}"
 
 printf "Exporting schematic file...\n"
 kicad-cli sch export pdf \
