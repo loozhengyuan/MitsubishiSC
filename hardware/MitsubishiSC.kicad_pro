@@ -48,7 +48,7 @@
         "silk_text_thickness": 0.1,
         "silk_text_upright": false,
         "zones": {
-          "min_clearance": 0.1
+          "min_clearance": 0.3
         }
       },
       "diff_pair_dimensions": [
@@ -63,48 +63,7 @@
           "width": 0.1582
         }
       ],
-      "drc_exclusions": [
-        [
-          "hole_clearance|166100000|122500318|4eac0d45-e283-483e-8366-fd9f03804f1e|447997b0-fa1b-49d1-a1f4-51c63b824f11",
-          "Footprint as per datasheet"
-        ],
-        [
-          "hole_clearance|171900000|122500318|24150d45-2f3d-406e-aa55-183f7cfac5a6|b9ca1999-55dc-4a77-a80b-7c2c260ecb27",
-          "Footprint as per datasheet"
-        ],
-        [
-          "lib_footprint_mismatch|152575000|124200000|45575d59-cb53-49be-9d7c-f48e090a96c0|00000000-0000-0000-0000-000000000000",
-          "FIXME: Perpetual diffs"
-        ],
-        [
-          "solder_mask_bridge|144325191|98148725|e91966ed-c391-4668-853f-66b1e5c241e6|0a95cc3d-4508-4dd2-a32d-7ffb8783e65d",
-          "Footprint as expected"
-        ],
-        [
-          "solder_mask_bridge|174718724|124795184|e1dfca1f-e777-415b-b74d-d6ad3147e07c|0a95cc3d-4508-4dd2-a32d-7ffb8783e65d",
-          "Footprint as expected"
-        ],
-        [
-          "solder_mask_bridge|176224343|81317131|9d4ecf8b-be38-491b-a713-750ae85b6cad|0a95cc3d-4508-4dd2-a32d-7ffb8783e65d",
-          "Footprint as expected"
-        ],
-        [
-          "starved_thermal|165650000|121925318|0a95cc3d-4508-4dd2-a32d-7ffb8783e65d|ed92feec-dbd5-4861-b967-8c7e05481955|F.Cu",
-          "Footprint as per datasheet"
-        ],
-        [
-          "starved_thermal|165950000|121925318|0a95cc3d-4508-4dd2-a32d-7ffb8783e65d|447997b0-fa1b-49d1-a1f4-51c63b824f11|F.Cu",
-          "Footprint as per datasheet"
-        ],
-        [
-          "starved_thermal|172050000|121925318|0a95cc3d-4508-4dd2-a32d-7ffb8783e65d|b9ca1999-55dc-4a77-a80b-7c2c260ecb27|F.Cu",
-          "Footprint as per datasheet"
-        ],
-        [
-          "starved_thermal|172350000|121925318|0a95cc3d-4508-4dd2-a32d-7ffb8783e65d|3de745df-8d74-4d36-9dc6-9a1d42c38083|F.Cu",
-          "Footprint as per datasheet"
-        ]
-      ],
+      "drc_exclusions": [],
       "meta": {
         "version": 2
       },
@@ -296,7 +255,24 @@
     "equivalence_files": []
   },
   "erc": {
-    "erc_exclusions": [],
+    "erc_exclusions": [
+      [
+        "footprint_link_issues|533400|1079500|c7b64ee0-8267-42af-90b6-096b95b2ae32|00000000-0000-0000-0000-000000000000|||",
+        "False positive"
+      ],
+      [
+        "footprint_link_issues|533400|1346200|177e200d-5bc0-4a17-8f70-e04d14d81d45|00000000-0000-0000-0000-000000000000|||",
+        "False positive"
+      ],
+      [
+        "footprint_link_issues|546100|609600|c7b64ee0-8267-42af-90b6-096b95b2ae32|00000000-0000-0000-0000-000000000000|||",
+        "Upstream bug"
+      ],
+      [
+        "footprint_link_issues|546100|876300|177e200d-5bc0-4a17-8f70-e04d14d81d45|00000000-0000-0000-0000-000000000000|||",
+        "Upstream bug"
+      ]
+    ],
     "meta": {
       "version": 0
     },
@@ -482,7 +458,7 @@
       "duplicate_sheet_names": "error",
       "endpoint_off_grid": "warning",
       "extra_units": "error",
-      "footprint_filter": "ignore",
+      "footprint_filter": "error",
       "footprint_link_issues": "warning",
       "four_way_junction": "ignore",
       "global_label_dangling": "warning",
@@ -638,7 +614,7 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "UART",
+        "name": "JTAG",
         "pcb_color": "rgba(255, 255, 0, 0.502)",
         "priority": 5,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
@@ -655,7 +631,7 @@
         "line_style": 0,
         "microvia_diameter": 0.3,
         "microvia_drill": 0.1,
-        "name": "USB",
+        "name": "UART",
         "pcb_color": "rgba(0, 255, 255, 0.502)",
         "priority": 6,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
@@ -672,8 +648,8 @@
     "netclass_assignments": null,
     "netclass_patterns": [
       {
-        "netclass": "GND",
-        "pattern": "GND"
+        "netclass": "+12V",
+        "pattern": "*12V*"
       },
       {
         "netclass": "+3.3V",
@@ -684,24 +660,40 @@
         "pattern": "*5V*"
       },
       {
-        "netclass": "+12V",
-        "pattern": "*12V*"
-      },
-      {
-        "netclass": "USB",
-        "pattern": "*USB_D*"
-      },
-      {
-        "netclass": "UART",
-        "pattern": "*_RX"
-      },
-      {
-        "netclass": "UART",
-        "pattern": "*_TX"
+        "netclass": "GND",
+        "pattern": "GND"
       },
       {
         "netclass": "GPIO",
-        "pattern": "*GPIO*"
+        "pattern": "*_IO*"
+      },
+      {
+        "netclass": "GPIO",
+        "pattern": "*_LED*"
+      },
+      {
+        "netclass": "GPIO",
+        "pattern": "/MCU_BOOT"
+      },
+      {
+        "netclass": "GPIO",
+        "pattern": "/MCU_RST"
+      },
+      {
+        "netclass": "JTAG",
+        "pattern": "*_MT*"
+      },
+      {
+        "netclass": "JTAG",
+        "pattern": "*_JT*"
+      },
+      {
+        "netclass": "UART",
+        "pattern": "*_RX*"
+      },
+      {
+        "netclass": "UART",
+        "pattern": "*_TX*"
       }
     ]
   },
@@ -878,7 +870,7 @@
     "BOARD_ENGINEER": "Loo Zheng Yuan",
     "BOARD_NAME": "MitsubishiSC",
     "BOARD_REVISION": "A",
-    "BOARD_VERSION": "0.3",
+    "BOARD_VERSION": "0.4",
     "BUILD_COMMIT": "",
     "BUILD_TIMESTAMP": ""
   }
