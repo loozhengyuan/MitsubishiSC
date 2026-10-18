@@ -200,7 +200,7 @@
 	(property "BOARD_ENGINEER" "Loo Zheng Yuan")
 	(property "BOARD_NAME" "MitsubishiSC")
 	(property "BOARD_REVISION" "A")
-	(property "BOARD_VERSION" "0.4")
+	(property "BOARD_VERSION" "0.5")
 	(property "BUILD_COMMIT" "")
 	(property "BUILD_TIMESTAMP" "")
 	(footprint "Fiducial:Fiducial_1mm_Mask2mm"
