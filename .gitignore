@@ -1,41 +1,19 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
 # Environment files
 *.env
 
-# PlatformIO files
-.pio/
+# Build dependencies
+managed_components/
 
-# PCB export files
+# Build output (firmware and PCB export files)
 build/
+
+# Generated config files
+sdkconfig
+sdkconfig.old
+
+# Generated VSCode files
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+
+# Generated manufacturing partition files
+out/
