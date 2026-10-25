@@ -4,24 +4,46 @@
 
 Smart controller for Mitsubishi Electric HVAC systems.
 
-## Usage
+## Development
 
-The [`platformio.ini`](./platformio.ini) defines the list of build environments. Each board configuration comes in `debug` and `release` builds.
+The firmware is built with [Espressif ESP-IDF](https://github.com/espressif/esp-idf) and [Espressif Matter SDK](https://github.com/espressif/esp-matter), and requires **ESP-IDF v5.5.1** to build and flash.
+
+### Configuration
+
+- `sdkconfig.defaults`: Baseline configuration for Matter
+- `sdkconfig.debug`: Enables debug logging
+- `sdkconfig.mfgpart`: Enables [Factory Data Providers](https://docs.espressif.com/projects/esp-matter/en/latest/esp32/developing.html#factory-data-providers)
+- `sdkconfig.lowpower`: Enables power-saving configurations
+- `sdkconfig.thread`: Enables Thread mode
+
+```shell
+idf.py -D SDKCONFIG_DEFAULTS='sdkconfig.defaults;sdkconfig.mfgpart;sdkconfig.thread' set-target 'esp32c6'
+```
+
+### Factory Data Partition
+
+For the initial flashing, we need to generate the factory data partition using the [`esp-matter-mfg-tool`](https://github.com/espressif/esp-matter-tools/tree/main/mfg_tool). For convenience, we can use the [`./scripts/generate.sh`](./scripts/generate.sh) script:
+
+```shell
+./scripts/generate.sh
+```
+
+Thereafter, we can flash the initial factory partition (substitute `ID` based on the generated files):
+
+```shell
+idf.py flash --extra-args="0x3E0000 $(pwd)/out/fff2_8001/${ID}/${ID}-partition.bin"
+```
 
 ### Build
 
-To compile the firmware, use the `pio run` command with the designated build environment.
-
 ```shell
-pio run --environment mitsubishisc_v1_release
+idf.py build
 ```
 
 ### Flash
 
-To flash the build artifact to the board, connect the board and run the `pio run` command with the `upload` target.
-
 ```shell
-pio run --target upload --environment mitsubishisc_v1_release
+idf.py flash
 ```
 
 ## Concepts

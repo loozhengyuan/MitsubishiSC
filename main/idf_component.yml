@@ -1,0 +1,7 @@
+dependencies:
+  espressif/esp_matter:
+    version: "1.4.1"
+  espressif/arduino-esp32:
+    version: "3.3.5"
+  swicago/heatpump:
+    git: https://github.com/SwiCago/HeatPump.git
