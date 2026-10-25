@@ -6,7 +6,7 @@ Smart controller for Mitsubishi Electric HVAC systems.
 
 ## Development
 
-The firmware is built with [Espressif ESP-IDF](https://github.com/espressif/esp-idf) and [Espressif Matter SDK](https://github.com/espressif/esp-matter), and requires **ESP-IDF v5.5.1** to build and flash.
+The firmware is built with [Espressif ESP-IDF](https://github.com/espressif/esp-idf) and [Espressif Matter SDK](https://github.com/espressif/esp-matter), and requires **ESP-IDF v5.5.5** to build and flash.
 
 ### Configuration
 

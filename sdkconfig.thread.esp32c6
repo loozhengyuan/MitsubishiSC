@@ -2,4 +2,3 @@
 # ESP32C6 supports both WiFi and Thread, we need to disable
 # WiFi explicitly to use Thread.
 CONFIG_ENABLE_WIFI_STATION=n
-CONFIG_ENABLE_WIFI_AP=n
