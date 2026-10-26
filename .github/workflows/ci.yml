@@ -151,7 +151,7 @@ jobs:
       - name: Set up ESP-IDF
         uses: espressif/install-esp-idf-action@8fc05d1470d5591417e7a3707a1f2bec178db4ae # v1
         with:
-          version: v5.5.1
+          version: v5.5.5
 
       - name: Show ESP-IDF version
         run: |
