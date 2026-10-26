@@ -33,9 +33,6 @@ void setup() {
   Serial1.begin(2400, SERIAL_8E1, 23, 22);
   hp.connect(&Serial1);
 
-  // FIXME: There is outstanding bug with some control sequences
-  // and we manually patch the libraries to make it work.
-  // https://github.com/espressif/arduino-esp32/issues/12382
   device.begin(MatterThermostat::THERMOSTAT_SEQ_OP_COOLING,
                MatterThermostat::THERMOSTAT_AUTO_MODE_DISABLED);
 
