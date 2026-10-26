@@ -149,9 +149,6 @@ kicad-cli pcb export vrml \
     --user-origin 0,0 \
     "${kicad_pcb_file}"
 
-# FIXME: Due to issue parsing negative values, we deliberately
-# add an extra space in the arg value of `--rotate` as workaround.
-# https://gitlab.com/kicad/code/kicad/-/issues/20191
 printf "Exporting 3D render files...\n"
 kicad-cli pcb render \
     --output "${tmp_dir_dsn}/${kicad_project_name}-Top.png" \
@@ -166,7 +163,7 @@ kicad-cli pcb render \
     --define-var "BUILD_TIMESTAMP=${build_timestamp}" \
     --zoom '0.8' \
     --side top \
-    --rotate ' -45,0,45' \
+    --rotate '-45,0,45' \
     "${kicad_pcb_file}"
 kicad-cli pcb render \
     --output "${tmp_dir_dsn}/${kicad_project_name}-Bottom.png" \
@@ -181,7 +178,7 @@ kicad-cli pcb render \
     --define-var "BUILD_TIMESTAMP=${build_timestamp}" \
     --zoom '0.8' \
     --side bottom \
-    --rotate ' -45,0,45' \
+    --rotate '-45,0,45' \
     "${kicad_pcb_file}"
 
 cp -R "${tmp_dir_dsn}" "${out_dir}"
