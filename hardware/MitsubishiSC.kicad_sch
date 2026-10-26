@@ -3473,7 +3473,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "ZY_Connector:Mitsubishi_CN105_Device_MountingPin"
+		(symbol "ZY_Connector:MitsubishiElectric_CN105_Device_MountingPin"
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
@@ -3489,7 +3489,7 @@
 					)
 				)
 			)
-			(property "Value" "Mitsubishi_CN105_Device_MountingPin"
+			(property "Value" "MitsubishiElectric_CN105_Device_MountingPin"
 				(at 0 8.89 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3532,7 +3532,7 @@
 					)
 				)
 			)
-			(property "ki_keywords" "mitsubishi cn105 device"
+			(property "ki_keywords" "mitsubishi electric cn105 device"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -3554,7 +3554,7 @@
 					)
 				)
 			)
-			(symbol "Mitsubishi_CN105_Device_MountingPin_0_0"
+			(symbol "MitsubishiElectric_CN105_Device_MountingPin_0_0"
 				(pin power_in line
 					(at 0 -10.16 90)
 					(length 2.54)
@@ -3574,7 +3574,7 @@
 					)
 				)
 			)
-			(symbol "Mitsubishi_CN105_Device_MountingPin_1_0"
+			(symbol "MitsubishiElectric_CN105_Device_MountingPin_1_0"
 				(pin power_out line
 					(at 7.62 5.08 180)
 					(length 2.54)
@@ -3666,7 +3666,7 @@
 					)
 				)
 			)
-			(symbol "Mitsubishi_CN105_Device_MountingPin_1_1"
+			(symbol "MitsubishiElectric_CN105_Device_MountingPin_1_1"
 				(rectangle
 					(start -5.08 7.62)
 					(end 5.08 -7.62)
@@ -12876,7 +12876,7 @@
 		)
 	)
 	(symbol
-		(lib_id "ZY_Connector:Mitsubishi_CN105_Device_MountingPin")
+		(lib_id "ZY_Connector:MitsubishiElectric_CN105_Device_MountingPin")
 		(at 22.86 66.04 0)
 		(unit 1)
 		(body_style 1)
