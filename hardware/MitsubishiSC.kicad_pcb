@@ -315,6 +315,7 @@
 		(pad "" smd circle
 			(at 0 0)
 			(size 1 1)
+			(property pad_prop_fiducial_glob)
 			(layers "F.Cu" "F.Mask")
 			(solder_mask_margin 0.5)
 			(clearance 0.6)
@@ -3651,6 +3652,7 @@
 		(pad "" smd circle
 			(at 0 0)
 			(size 1 1)
+			(property pad_prop_fiducial_glob)
 			(layers "F.Cu" "F.Mask")
 			(solder_mask_margin 0.5)
 			(clearance 0.6)
@@ -13208,6 +13210,7 @@
 		(pad "" smd circle
 			(at 0 0)
 			(size 1 1)
+			(property pad_prop_fiducial_glob)
 			(layers "F.Cu" "F.Mask")
 			(solder_mask_margin 0.5)
 			(clearance 0.6)
