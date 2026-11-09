@@ -1116,7 +1116,7 @@
 			(uuid "4ee21cab-41e2-4319-b1ce-cfd37b803ce7")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS810.step"
+		(model "${KICAD10_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS810.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -2685,7 +2685,7 @@
 			(uuid "a661ceed-cae2-449f-a241-d91398c69da1")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-323.step"
+		(model "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-323.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -3091,7 +3091,7 @@
 			(uuid "582035da-3b2a-43c1-8f3b-0f68c08fad25")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step"
+		(model "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -4029,7 +4029,7 @@
 			(uuid "a571230a-7477-4d9e-bb09-a42d18e67ec5")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS810.step"
+		(model "${KICAD10_3DMODEL_DIR}/Button_Switch_SMD.3dshapes/SW_SPST_PTS810.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -5908,7 +5908,7 @@
 			(uuid "aabbfa04-e603-4ffe-83e2-2afd48961531")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-123F.step"
+		(model "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-123F.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -8113,7 +8113,7 @@
 			(uuid "02806698-64e4-4a9e-bf9a-fbb87bc42aab")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step"
+		(model "${KICAD10_3DMODEL_DIR}/Package_TO_SOT_SMD.3dshapes/SOT-23-6.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -10593,7 +10593,7 @@
 			(uuid "ab8794bb-ede7-4211-bc83-8c95a5d5539a")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-323.step"
+		(model "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-323.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -14086,7 +14086,7 @@
 			(uuid "c4142d23-d774-4ec4-9191-3c7ebcdb4003")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-123F.step"
+		(model "${KICAD10_3DMODEL_DIR}/Diode_SMD.3dshapes/D_SOD-123F.step"
 			(offset
 				(xyz 0 0 0)
 			)
@@ -16763,7 +16763,7 @@
 			(uuid "7c433057-4edc-4c83-a710-3c7c2412d826")
 		)
 		(embedded_fonts no)
-		(model "${KICAD9_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_TDK_VLS6045EX_VLS6045AF.step"
+		(model "${KICAD10_3DMODEL_DIR}/Inductor_SMD.3dshapes/L_TDK_VLS6045EX_VLS6045AF.step"
 			(offset
 				(xyz 0 0 0)
 			)
