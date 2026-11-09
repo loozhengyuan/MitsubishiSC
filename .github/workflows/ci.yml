@@ -227,7 +227,7 @@ jobs:
       - name: Fetch 3D models
         run: |
           git clone \
-            --branch 9.0.6 \
+            --branch 10.0.7 \
             --depth 1 \
             https://gitlab.com/kicad/libraries/kicad-packages3D.git \
             /usr/share/kicad/3dmodels
