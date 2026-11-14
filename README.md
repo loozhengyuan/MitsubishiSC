@@ -4,6 +4,18 @@
 
 Smart controller for Mitsubishi Electric HVAC systems.
 
+## Usage
+
+### Upgrade
+
+Download the app image from the [latest release](https://github.com/loozhengyuan/MitsubishiSC/releases/latest) and flash it with [`esptool`](https://docs.espressif.com/projects/esptool/), which keeps the Matter commissioning data:
+
+```shell
+esptool --chip esp32c6 write-flash 0x20000 MitsubishiSC-vX.Y.Z-fw-esp32c6-thread-app.bin
+```
+
+_NOTE: If the device does not boot after upgrading, flash the full image at `0x0` instead, which erases the Matter commissioning data. Neither image contains the per-device [factory data partition](#factory-data-partition)._
+
 ## Development
 
 The firmware is built with [Espressif ESP-IDF](https://github.com/espressif/esp-idf) and [Espressif Matter SDK](https://github.com/espressif/esp-matter), and requires **ESP-IDF v5.5.5** to build and flash.
@@ -45,6 +57,10 @@ idf.py build
 ```shell
 idf.py flash
 ```
+
+### Release
+
+The firmware and hardware share a single [semantic version](https://semver.org) in [`VERSION`](./VERSION), where `MAJOR.MINOR` is the board version. To release, bump `VERSION` in a pull request, then run the [`ci`](https://github.com/loozhengyuan/MitsubishiSC/actions/workflows/ci.yml) workflow on `main` with `release` checked.
 
 ## Concepts
 

@@ -4,6 +4,12 @@ cmake_minimum_required(VERSION 3.22)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
+# NOTE: ESP-IDF takes the app version from `PROJECT_VER` before falling back to
+# `version.txt` or `git describe`, so this makes `VERSION` the source of truth.
+# https://docs.espressif.com/projects/esp-idf/en/v5.5.5/esp32c6/api-reference/system/misc_system_api.html#app-version
+file(STRINGS "${CMAKE_CURRENT_LIST_DIR}/VERSION" PROJECT_VER LIMIT_COUNT 1)
+set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${CMAKE_CURRENT_LIST_DIR}/VERSION")
+
 project(MitsubishiSC)
 
 # "Trim" the build. Include the minimal set of components, main, and anything it depends on.

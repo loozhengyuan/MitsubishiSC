@@ -7,6 +7,13 @@ on:
   pull_request:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Release
+        type: boolean
+        required: true
+        default: false
 
 defaults:
   run:
@@ -183,6 +190,34 @@ jobs:
         run: |
           ccache --show-stats
 
+      # NOTE: Combines the bootloader, partition table, OTA data and app into
+      # a single image written at 0x0. The `--fill-flash-size` option must NOT
+      # be used as it pads the image to the end of flash, which erases the
+      # per-device `fctry` partition.
+      - name: Create full flash image
+        run: |
+          idf.py merge-bin
+
+      # NOTE: Release asset naming convention is
+      # `<project>-v<version>-fw-<target>-<variant>-<content>.<ext>`
+      - name: Prepare firmware artifacts
+        run: |
+          build_version="$(< ./VERSION)"
+          asset_prefix="MitsubishiSC-v${build_version}-fw-esp32c6-thread"
+
+          mkdir -p ./build/dist/
+          cp ./build/merged-binary.bin "./build/dist/${asset_prefix}-full.bin"
+          cp ./build/MitsubishiSC.bin "./build/dist/${asset_prefix}-app.bin"
+          cp ./build/MitsubishiSC.elf "./build/dist/${asset_prefix}-app.elf"
+          ls -lah ./build/dist/
+
+      - name: Upload firmware artifacts
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: MitsubishiSC-build-fw
+          path: ./build/dist/
+          if-no-files-found: error
+
   build-hw:
     needs:
       - test-erc
@@ -241,20 +276,98 @@ jobs:
         run: |
           ./scripts/export.sh
 
-      - name: Upload design artifacts
+      - name: Upload hardware artifacts
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: MitsubishiSC-hw-build-dsn
-          path: ./build/design/
+          name: MitsubishiSC-build-hw
+          path: ./build/hardware/
+          if-no-files-found: error
 
-      - name: Upload manufacturing artifacts
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
-        with:
-          name: MitsubishiSC-hw-build-mfg
-          path: ./build/manufacturing/
+  release:
+    needs:
+      - build-fw
+      - build-hw
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    permissions:
+      contents: write # NOTE: Required to create GitHub releases
 
-      - name: Upload assembly artifacts
-        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          name: MitsubishiSC-hw-build-asb
-          path: ./build/assembly/
+          fetch-depth: 0 # NOTE: Required to fetch ALL tags
+
+      # NOTE: The pattern excludes the ERC/DRC report artifacts, and the build
+      # artifacts are merged as the release assets are already uniquely named.
+      - name: Download build artifacts
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          pattern: MitsubishiSC-build-*
+          path: ./dist/
+          merge-multiple: true
+
+      # NOTE: The build version (i.e. `VERSION`) must either be the released
+      # version (i.e. latest `vX.Y.Z` tag) or exactly a single major, minor or
+      # patch increment from it.
+      - name: Determine build and released versions
+        id: version
+        run: |
+          build_version="$(< ./VERSION)"
+          if [[ ! "${build_version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            printf "error: VERSION is not a valid X.Y.Z version: got %s\n" "${build_version}" >&2
+            exit 1
+          fi
+
+          released_version="$(git tag --list | sed 's/^v//' | awk '/^[0-9]+\.[0-9]+\.[0-9]+$/' | sort --version-sort | tail -n 1)"
+          released_version="${released_version:-0.0.0}"
+          IFS='.' read -r major minor patch <<< "${released_version}"
+          allowed_versions=(
+            "${released_version}"
+            "$((major + 1)).0.0"
+            "${major}.$((minor + 1)).0"
+            "${major}.${minor}.$((patch + 1))"
+          )
+
+          printf "RELEASED:\t%s\n" "${released_version}"
+          printf "BUILD:\t%s\n" "${build_version}"
+          printf "ALLOWED:\t%s\n" "${allowed_versions[*]}"
+
+          if [[ " ${allowed_versions[*]} " != *" ${build_version} "* ]]; then
+            printf "error: VERSION is not the released version or a single increment from it: got %s\n" "${build_version}" >&2
+            exit 1
+          fi
+
+          echo "build=${build_version}" >> "${GITHUB_OUTPUT}"
+          echo "released=${released_version}" >> "${GITHUB_OUTPUT}"
+
+      - name: Verify build version is unreleased
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.release
+        env:
+          BUILD_VERSION: ${{ steps.version.outputs.build }}
+          RELEASED_VERSION: ${{ steps.version.outputs.released }}
+        run: |
+          if [[ "${BUILD_VERSION}" == "${RELEASED_VERSION}" ]]; then
+            printf "error: VERSION is already released: got %s\n" "${BUILD_VERSION}" >&2
+            exit 1
+          fi
+
+      - name: Generate checksums
+        working-directory: ./dist
+        run: |
+          sha256sum -- * > SHA256SUMS
+
+      - name: Display release assets
+        run: |
+          ls -lah ./dist/
+          cat ./dist/SHA256SUMS
+
+      # NOTE: The `--target` flag ensures that the tag is created on the commit
+      # that was built, instead of the branch HEAD which may have moved on.
+      - name: Create release
+        if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && inputs.release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BUILD_VERSION: ${{ steps.version.outputs.build }}
+        run: |
+          gh release create "v${BUILD_VERSION}" --target "${GITHUB_SHA}" --generate-notes --fail-on-no-commits ./dist/*

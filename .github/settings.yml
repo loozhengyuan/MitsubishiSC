@@ -83,3 +83,5 @@ rulesets:
               context: build-fw
             - integration_id: 15368
               context: build-hw
+            - integration_id: 15368
+              context: release
